@@ -1,16 +1,15 @@
 import streamlit as st
 import requests
-from googletrans import Translator  # Biblioteca para tradução
+from deep_translator import GoogleTranslator  # Substituímos googletrans por deep-translator
 import json
 
 st.sidebar.header("Respostas de Imagens")
 st.sidebar.write("""
 - Carregue uma imagem e escolha um tom de resposta.
 
-- Caso tenha alguma idéia para publicarmos, envie uma mensagem para: 11-990000425 (Willian)
-- Contribua com qualquer valor para mantermos a pagina no ar. PIX (wpyagami@gmail.com)
+- Caso tenha alguma ideia para publicarmos, envie uma mensagem para: 11-990000425 (Willian)
+- Contribua com qualquer valor para mantermos a página no ar. PIX (wpyagami@gmail.com)
 """)
-
 
 # Recupera as chaves de acesso dos segredos do Streamlit
 hf_key = st.secrets["hungging"]
@@ -34,9 +33,8 @@ def query(file):
 
 def traduzir_legenda(texto):
     """Traduz o texto gerado de inglês para português."""
-    translator = Translator()
-    traducao = translator.translate(texto, src='en', dest='pt')
-    return traducao.text
+    translator = GoogleTranslator(source='en', target='pt')
+    return translator.translate(texto)
 
 def extrair_legenda(result):
     """
@@ -86,14 +84,14 @@ def main():
     #st.subheader("Envie uma mensagem!")
     
     # Opções de tom para a resposta
-    tons = ["engraçado", "poético", "amoroso", "emotivo", "pessimista", "sarcástico", "inspirador","nervoso","desafiador","com rima","sensacionalista","medroso","alegre","otimista"]
+    tons = ["engraçado", "poético", "amoroso", "emotivo", "pessimista", "sarcástico", "inspirador", "nervoso", "desafiador", "com rima", "sensacionalista", "medroso", "alegre", "otimista"]
     tom_selecionado = st.selectbox("Escolha o tom da resposta:", tons)
     
     if st.button("Gerar Resposta"):
-            with st.spinner("Gerando resposta ..."):
-                resposta = gerar_resposta_em_rima(legenda, tom_selecionado)
-            st.success("Resposta:")
-            st.write(resposta)
+        with st.spinner("Gerando resposta ..."):
+            resposta = gerar_resposta_em_rima(legenda, tom_selecionado)
+        st.success("Resposta:")
+        st.write(resposta)
 
 if __name__ == "__main__":
     main()
